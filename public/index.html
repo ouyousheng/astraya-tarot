@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080612">
+  <meta name="description" content="星谕塔罗——在星河与牌阵之间，聆听内心的答案。">
+  <title>ASTRAYA · 星谕塔罗</title>
+  <link rel="preload" as="image" href="assets/cosmic-gateway-v2.jpg" media="(min-width: 761px)">
+  <link rel="preload" as="image" href="assets/cosmic-gateway-mobile-v2.jpg" media="(max-width: 760px)">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <section class="splash" id="splash" aria-label="星谕塔罗启动界面">
+    <div class="splash__cosmos" aria-hidden="true"></div>
+    <canvas class="cosmic-gateway" id="cosmicGateway" aria-hidden="true"></canvas>
+    <div class="splash__portal-core" aria-hidden="true"></div>
+    <div class="splash__glow" aria-hidden="true"></div>
+    <div class="splash__content">
+      <div class="oracle-mark oracle-mark--large" aria-hidden="true">
+        <span class="oracle-mark__star"></span>
+      </div>
+      <p class="splash__name">ASTRAYA</p>
+      <p class="splash__subtitle">星谕 · TAROT</p>
+      <div class="splash__line" aria-hidden="true"></div>
+      <button class="splash__enter" id="enterExperience" type="button" aria-describedby="soundHint">
+        <span class="splash__enter-icon" aria-hidden="true">♬</span>
+        <span class="splash__enter-text">轻触开启星谕</span>
+      </button>
+      <p class="splash__sound-hint" id="soundHint">建议开启声音 · 空灵氛围音效</p>
+      <button class="splash__silent" id="enterSilently" type="button">静音进入</button>
+    </div>
+  </section>
+
+  <div class="app" id="app" inert aria-hidden="true">
+    <header class="topbar">
+      <a class="brand-pill" id="brandHome" href="#" aria-label="返回星谕首页">
+        <span class="oracle-mark oracle-mark--small" aria-hidden="true">
+          <span class="oracle-mark__star"></span>
+        </span>
+        <span class="brand-pill__name">ASTRAYA</span>
+        <span class="brand-pill__cn">星谕</span>
+      </a>
+
+      <ol class="progress" aria-label="占卜进度">
+        <li class="progress__item is-active" data-step="1" aria-current="step">启程</li>
+        <li class="progress__item" data-step="2">默问</li>
+        <li class="progress__item" data-step="3">选牌</li>
+        <li class="progress__item" data-step="4">解读</li>
+      </ol>
+
+      <div class="topbar__actions">
+        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true" aria-label="关闭音效">
+          <span class="sound-toggle__waves" aria-hidden="true">♬</span>
+          <span class="sound-toggle__label">音效开</span>
+        </button>
+        <div class="status-pill" aria-label="系统状态">
+          <span class="status-pill__dot"></span>
+          星图已点亮
+        </div>
+      </div>
+    </header>
+
+    <main class="experience">
+      <section class="hero" id="heroScene" aria-labelledby="page-title">
+        <div class="card-echoes" aria-hidden="true">
+          <span class="card-echo card-echo--1"></span>
+          <span class="card-echo card-echo--2"></span>
+          <span class="card-echo card-echo--3"></span>
+          <span class="card-echo card-echo--4"></span>
+          <span class="card-echo card-echo--5"></span>
+        </div>
+
+        <div class="zodiac" aria-hidden="true">
+          <span class="zodiac__orbit zodiac__orbit--outer"></span>
+          <span class="zodiac__orbit zodiac__orbit--inner"></span>
+          <span class="zodiac__diamond"></span>
+        </div>
+
+        <div class="hero__content">
+          <p class="eyebrow"><span>✦</span> TAROT · 星河占卜 <span>✦</span></p>
+          <h1 id="page-title">ASTRAYA</h1>
+          <p class="hero__cn-title">命运的回响</p>
+          <p class="hero__description">
+            凝神默问，从流动的星河里拾起五张牌，<br>
+            让牌面替你照见此刻尚未说出的答案。
+          </p>
+
+          <button class="begin-button" id="beginButton" type="button">
+            <span class="begin-button__shine" aria-hidden="true"></span>
+            <span class="begin-button__en">BEGIN</span>
+            <span class="begin-button__cn">开始占卜</span>
+            <span class="begin-button__arrow" aria-hidden="true">→</span>
+          </button>
+
+          <p class="hero__hint">点击开始 · 下一步将进入默问</p>
+        </div>
+      </section>
+
+      <section class="question-scene" id="questionScene" aria-labelledby="questionTitle" aria-hidden="true" inert>
+        <button class="scene-back" id="backToStart" type="button" aria-label="返回上一界面：启程">
+          <span aria-hidden="true">←</span>
+          上一步 · 返回启程
+        </button>
+
+        <div class="question-layout">
+          <div class="breathing-oracle" aria-hidden="true">
+            <span class="breathing-oracle__orbit breathing-oracle__orbit--outer"></span>
+            <span class="breathing-oracle__orbit breathing-oracle__orbit--inner"></span>
+            <span class="breathing-oracle__star">✦</span>
+            <span class="breathing-oracle__words">吸 · 呼</span>
+          </div>
+
+          <div class="question-panel">
+            <div class="question-panel__meta">
+              <p class="question-panel__step">STEP 02 <span>·</span> 默问</p>
+              <button class="wisdom-refresh" id="refreshWisdom" type="button" aria-label="更换一句儒家箴言">
+                <span aria-hidden="true">↻</span> 换一句
+              </button>
+            </div>
+            <h2 id="questionTitle" tabindex="-1">静而后能安</h2>
+            <p class="question-panel__intro" id="questionIntro">先让纷乱的念头慢下来，再把问题放在心中。心有所定，思考才会从焦虑走向清明。</p>
+
+            <div class="question-guidance" role="note">
+              <span class="question-guidance__mark" aria-hidden="true">曰</span>
+              <div class="question-guidance__copy">
+                <blockquote id="wisdomQuote">“知止而后有定，定而后能静，静而后能安。”</blockquote>
+                <cite id="wisdomSource">《礼记·大学》</cite>
+                <p><b>此刻自问</b><span id="wisdomReflection">你真正想安定下来的，究竟是事情的结果，还是自己的内心？</span></p>
+              </div>
+            </div>
+
+            <label class="question-label" for="questionInput">
+              写下你的问题 <span>可选，也可以只在心中默念</span>
+            </label>
+            <div class="question-field">
+              <textarea id="questionInput" rows="3" maxlength="80" placeholder="例如：面对现在的选择，我需要留意什么？"></textarea>
+              <span class="question-count" aria-live="polite"><b id="questionCount">0</b>/80</span>
+            </div>
+
+            <div class="question-suggestions" aria-label="问题示例">
+              <button type="button" data-question="面对现在的选择，我需要留意什么？">关于选择</button>
+              <button type="button" data-question="这段关系正在提醒我看见什么？">关于关系</button>
+              <button type="button" data-question="现阶段的我，最需要把力量放在哪里？">关于成长</button>
+            </div>
+
+            <button class="question-ready" id="questionReady" type="button">
+              <span>
+                <small>QUESTION HELD</small>
+                问题已在心中
+              </span>
+              <span class="question-ready__next">进入选牌&nbsp; →</span>
+            </button>
+            <p class="question-privacy"><span aria-hidden="true">◇</span> 确认牌阵后，问题与五张牌会发送给 AI 生成解读。请勿填写姓名、电话、地址等敏感信息。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card-scene" id="cardScene" aria-labelledby="cardTitle" aria-hidden="true" inert>
+        <button class="scene-back scene-back--cards" id="backToQuestion" type="button" aria-label="返回上一界面：默问">
+          <span aria-hidden="true">←</span>
+          上一步 · 返回默问
+        </button>
+
+        <div class="card-stage">
+          <header class="card-stage__header">
+            <p class="card-stage__step">STEP 03 <span>·</span> 选牌</p>
+            <h2 id="cardTitle" tabindex="-1">从星河中拾取五张牌</h2>
+            <p>不要分析牌的位置，让手停在最先吸引你的牌上。选择顺序会成为牌阵顺序，牌面将在解读时揭晓。</p>
+          </header>
+
+          <div class="spread-tracker" aria-label="五张牌阵进度">
+            <div class="spread-tracker__count"><b id="selectedCount">0</b><span>/ 5 已选择</span></div>
+            <ol class="spread-slots" id="spreadSlots">
+              <li data-slot="0"><span>Ⅰ</span><b>根源</b><i aria-hidden="true">✦</i></li>
+              <li data-slot="1"><span>Ⅱ</span><b>当下</b><i aria-hidden="true">✦</i></li>
+              <li data-slot="2"><span>Ⅲ</span><b>阻力</b><i aria-hidden="true">✦</i></li>
+              <li data-slot="3"><span>Ⅳ</span><b>提醒</b><i aria-hidden="true">✦</i></li>
+              <li data-slot="4"><span>Ⅴ</span><b>方向</b><i aria-hidden="true">✦</i></li>
+            </ol>
+          </div>
+
+          <div class="card-river" id="cardDeck" role="group" aria-label="请选择五张牌"></div>
+
+          <div class="card-stage__actions">
+            <p class="card-status" id="cardStatus" role="status" aria-live="polite">凭第一感觉，选择你的第一张牌。</p>
+            <button class="confirm-selection" id="confirmSelection" type="button" disabled>
+              <span>
+                <small>SEAL THE SPREAD</small>
+                确认这组牌阵
+              </span>
+              <span aria-hidden="true">五芒成阵&nbsp; →</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="reading-scene" id="readingScene" aria-labelledby="readingTitle" aria-hidden="true" inert>
+        <button class="scene-back scene-back--reading" id="backToCards" type="button" aria-label="返回上一界面：选牌">
+          <span aria-hidden="true">←</span>
+          上一步 · 返回选牌
+        </button>
+
+        <div class="reading-stage">
+          <header class="reading-stage__header">
+            <p class="reading-stage__step">STEP 04 <span>·</span> 解读</p>
+            <h2 id="readingTitle" tabindex="-1">牌面已在星河中显现</h2>
+            <p>AI 会结合牌阵位置、正逆位与你默问的内容，给出一份温和而具体的自我反思指引。</p>
+          </header>
+
+          <section class="revealed-spread" aria-labelledby="revealedTitle">
+            <div class="reading-block-heading">
+              <p>THE REVEALED SPREAD</p>
+              <h3 id="revealedTitle">你的五张牌</h3>
+            </div>
+            <ol class="revealed-cards" id="revealedCards" tabindex="0" aria-label="已翻开的五张塔罗牌，可横向滚动查看"></ol>
+          </section>
+
+          <section class="reading-oracle" aria-labelledby="oracleReadingTitle">
+            <div class="reading-loading" id="readingLoading" role="status" aria-live="polite">
+              <span class="reading-loading__sigil" aria-hidden="true">✦</span>
+              <strong>星谕正在解读……</strong>
+              <p>正在梳理五张牌之间的联系，通常只需片刻。</p>
+            </div>
+
+            <div class="reading-error" id="readingError" role="alert" hidden>
+              <span aria-hidden="true">◇</span>
+              <div>
+                <h3>星讯暂时中断</h3>
+                <p id="readingErrorMessage">AI 暂时没有回应，请稍后再试。</p>
+                <button id="retryReading" type="button">重新连接</button>
+              </div>
+            </div>
+
+            <article class="reading-content" id="readingContent" hidden>
+              <p class="reading-content__eyebrow">AI ORACLE READING</p>
+              <h3 id="oracleReadingTitle" tabindex="-1">此刻的整体启示</h3>
+              <p class="reading-summary" id="readingSummary"></p>
+
+              <ol class="reading-positions" id="readingPositions" aria-label="五个牌阵位置的解读"></ol>
+
+              <section class="reading-guidance" aria-labelledby="guidanceTitle">
+                <h4 id="guidanceTitle">可以带走的行动</h4>
+                <ul id="readingGuidance"></ul>
+              </section>
+
+              <blockquote class="reading-reflection">
+                <span>此刻自问</span>
+                <p id="readingReflection"></p>
+              </blockquote>
+
+              <p class="reading-reminder" id="readingReminder"></p>
+            </article>
+          </section>
+
+          <div class="reading-actions" id="readingActions">
+            <button class="reading-actions__back" id="backToCardsInline" type="button">
+              <span>PREVIOUS STEP</span>
+              ← 返回选牌
+            </button>
+            <button id="restartReading" type="button" hidden>
+              <span>NEW READING</span>
+              重新默问
+            </button>
+          </div>
+
+          <p class="reading-disclaimer">AI 解读仅用于娱乐与自我反思，不代表确定预言，也不能替代医疗、法律、财务等专业意见。</p>
+          <p class="card-art-credit">
+            牌面插画：Pamela Colman Smith，《Rider–Waite–Smith Tarot》（1910）·
+            <a href="https://commons.wikimedia.org/wiki/Category:Rider-Waite-Smith_tarot_deck_(TaionWC)" target="_blank" rel="noopener noreferrer">Wikimedia Commons 公版扫描</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-note">
+      <span>Ⅰ</span>
+      <span>遵从直觉，而非预言</span>
+      <span>Ⅳ</span>
+    </footer>
+  </div>
+
+  <div class="lesson-toast" id="lessonToast" role="status" aria-live="polite">
+    <button class="lesson-toast__close" id="closeToast" type="button" aria-label="关闭提示">×</button>
+    <span class="lesson-toast__icon">✦</span>
+    <div>
+      <strong id="toastTitle">第三关完成</strong>
+      <p id="toastMessage">五张牌已经归位。下一关将揭晓牌面并进行解读。</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
